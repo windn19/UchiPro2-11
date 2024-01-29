@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/home/dmitry/PycharmProjects/UchiPro2-11/Файл БД/movies_db.db" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1462"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="movies"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="directors" show_row_id="0" encoding="" plot_x_axis="Строка #" unlock_view_pk=""><sort/><column_widths/><filter_values/><display_formats/><hidden_columns/><plot_y_axes><y_axis name="_rowid_" line_style="1" point_shape="5" colour="#ff420e" active="0"/><y_axis name="id" line_style="1" point_shape="5" colour="#004586" active="1"/><y_axis name="Строка #" line_style="1" point_shape="5" colour="#ffd320" active="0"/></plot_y_axes></table><table schema="main" name="movies" show_row_id="0" encoding="" plot_x_axis="id" unlock_view_pk=""><sort/><column_widths><column index="2" value="263"/></column_widths><filter_values/><display_formats/><hidden_columns/><plot_y_axes><y_axis name="_rowid_" line_style="1" point_shape="5" colour="#aecf00" active="1"/><y_axis name="director_id" line_style="1" point_shape="5" colour="#314004" active="1"/><y_axis name="duration" line_style="1" point_shape="5" colour="#83caff" active="1"/><y_axis name="id" line_style="1" point_shape="5" colour="#579d1c" active="0"/><y_axis name="year" line_style="1" point_shape="5" colour="#7e0021" active="1"/><y_axis name="Строка #" line_style="1" point_shape="5" colour="#4b1f6f" active="0"/></plot_y_axes></table><table schema="main" name="movies_genres" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk=""><sort/><column_widths/><filter_values/><display_formats/><hidden_columns/><plot_y_axes/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">--SELECT * FROM movies;
+--SELECT title, year FROM movies;
+--SELECT title as Название, year as Год from movies;
+SELECT DISTINCT title FROM movies;</sql><sql name="SQL 2">-- Выведи все поля таблицы movies, у которых не указан год или длительность.
+-- SELECT * FROM movies WHERE year is NULL or duration is NULL;
+-- Выведи названия фильмов длительностью не более двух часов
+-- SELECT title from movies WHERE duration &lt;= 120;
+-- Выведи id фильмов у которых указан хотя бы один жанр
+-- SELECT id, title from movies WHERE id in (SELECT DISTINCT movie_id FROM movies_genres);
+-- Выведи названия фильмов состоящих из двух и более слов
+-- SELECT title from movies WHERE title like '% %';
+</sql><sql name="SQL 3">-- Вывести фильмы от самых длинныx к самым коротким
+-- SELECT * FROM movies ORDER by duration DESC;
+-- Вывести фильмы от самых новых к старым в алфавитном порядке
+SELECT * FROM movies ORDER by year DESC, title;</sql><sql name="SQL 4">-- Вывести среднюю продолжительность фильмов
+-- SELECT avg(duration) FROM movies;
+-- Вывести год выпуска самого старого фильма
+SELECT min(year) FROM movies;</sql><sql name="SQL 5">-- Вывести количество фильмов у каждого режиссера
+-- SELECT count(title) as count, director_id FROM movies GROUP by director_id;
+-- Вывести среднюю продолжительность фильмов по режиссерам, если средняя продолжительность более двух часов
+SELECT avg(duration) as avg, director_id FROM movies group by director_id HAVING avg &gt; 120;</sql><sql name="SQL 6">-- Выведи количество фильмов вышедших после 2000 года
+-- SELECT count(title) from movies where year &gt; 2000;
+-- Выведи суммарную длительность фильмов у каждого режиссера
+-- SELECT director_id, sum(duration) from movies GROUP by director_id;
+-- Выведи имена режиссеров в алфавитном порядке
+-- SELECT name FROM directors ORDER by name;
+-- Выведи года выпусков самых новых фильмов у каждого режиссера
+SELECT max(year), director_id FROM movies GROUP by director_id;</sql><sql name="SQL 7">-- Вывести названия фильмов, у которых режиссер Кристофер Нолан
+-- SELECT title FROM movies where director_id = (SELECT id from directors WHERE name = 'Кристофер Нолан');
+-- Вывести жанры фильма Интерстеллар
+SELECT title FROM genres WHERE id in (SELECT genre_id FROM movies_genres WHERE movie_id = (SELECT id FROM movies WHERE title = 'Интерстеллар'));
+</sql><sql name="SQL 8">-- Вывести названия фильмов и имена их режиссеров. Если у фильма не указан режиссер, то он не будет выведен. Если его нужно вывести,
+-- то необходимо использовать LEFT JOIN
+-- SELECT title, name FROM movies JOIN directors on director_id = directors.id;
+-- Вывести названия фильмов и их жанры: фильмы без жанра в выборку не попадут
+SELECT movies.title as title, genres.title as genre FROM movies_genres
+ JOIN movies on movie_id = movies.id JOIN genres on genre_id = genres.id;</sql><sql name="SQL 9">-- Выведи названия фильмов у которых режиссер Кристофер Нолан.
+-- SELECT title FROM movies WHERE director_id in (SELECT id FROM directors WHERE name = 'Кристофер Нолан');
+-- Выведи неиспользуемые жанры
+-- SELECT title FROM genres WHERE not id in (SELECT DISTINCT genre_id from movies_genres);</sql><current_tab id="8"/></tab_sql></sqlb_project>
